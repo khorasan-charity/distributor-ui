@@ -119,10 +119,6 @@
                 this.showNotification(this.addDistributorResult, 'negative', 'error');
               })
         } else {
-          if (this.distributorToAdd.password !== this.distributorToAdd.repeatedPassword) {
-            this.addDistributorResult = 'ورودی‌ها به دقت بررسی شوند.';
-            this.showNotification(this.addDistributorResult, 'negative', 'error');
-          }
           this.addDistributorResult = 'ورودی‌ها به دقت بررسی شوند.';
           this.showNotification(this.addDistributorResult, 'negative', 'error');
         }

@@ -14,7 +14,7 @@ const routes = [
       },
       {
         path: '/donators',
-        component: () => import('pages/Donor.vue')
+        component: () => import('pages/Donors.vue')
       },
     ]
   }

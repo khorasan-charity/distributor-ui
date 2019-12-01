@@ -2,7 +2,7 @@
   <div class="q-pa-md">
     <q-input
       @keyup.enter="search"
-      v-model="distributorToSearch"
+      v-model="donorToSearch"
       filled
       label="جستجو"
     >
@@ -12,10 +12,9 @@
       </template>
     </q-input>
 
-    <!-- TODO: create table component -->
-    <distributors-table class="q-mt-sm" ref="distributorsTable" />
+    <donors-table class="q-mt-sm" ref="myTable" />
 
-    <add-distributor ref="addDialog" @successAdd="$refs.distributorsTable.reloadTable()" />
+    <add-donor ref="addDialog" @successAdd="$refs.myTable.reloadTable()" />
 
 
     <q-btn
@@ -29,26 +28,26 @@
 </template>
 
 <script>
-  import AddDistributor from '../components/AddDistributor.vue';
-  import DistributorsTable from '../components/DistributorsTable.vue';
+  import DonorsTable from "../components/DonorsTable.vue"
+  import AddDonor from "../components/AddDonor.vue"
   export default {
     components: {
-      AddDistributor,
-      DistributorsTable
+      DonorsTable,
+      AddDonor
     },
     data() {
       return {
-        distributorToSearch: ''
+        donorToSearch: ''
       }
     },
     methods: {
       search() {
-        // TODO: Complete search distributor
-        console.log(this.distributorToSearch);
+        console.log('search for donor: ', this.donorToSearch)
       }
     }
   }
 </script>
 
 <style scoped>
+
 </style>

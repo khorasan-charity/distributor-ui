@@ -41,14 +41,28 @@
               round
               color="blue"
               icon="edit" />
-            <q-btn dense flat round color="blue" icon="camera" />
-            <q-btn @click="deleteDistributor(props.row.id)" dense flat round color="red" icon="delete" />
+            <q-btn dense flat round color="brown-6" icon="camera" />
+            <q-btn
+              @click="deleteDistributor(props.row.id)"
+              dense
+              flat
+              round
+              color="red"
+              icon="delete" />
+            <q-btn
+              @click="sendToEditPassword(props.row.id)"
+              push
+              color="purple"
+              label="تغییر رمز" />
           </q-td>
         </q-tr>
       </template>
 
     </q-table>
-    <edit-distributor ref="editDistributorDialog" @successEdit="reloadTable"/>
+    <edit-distributor
+      :isPasswordEditing="isPasswordEditing"
+      ref="editDistributorDialog"
+      @successEdit="reloadTable"/>
   </div>
 
 </template>
@@ -61,7 +75,7 @@
     },
     data() {
       return {
-        isShow: true,
+        isPasswordEditing: false,
         loading: false,
         pagination: {
           rowsPerPage: 7,
@@ -116,37 +130,37 @@
           {
             name: 'operations',
             label: 'عملیات',
-            align: 'left'
+            align: 'center'
           }
         ],
         data: []
       }
     },
     mounted() {
-      this.reloadTable();
+      this.reloadTable()
     },
     methods: {
       reloadTable() {
         this.onRequest({
           pagination: this.pagination
-        });
+        })
       },
       onRequest(props) {
         // TODO: Read about parameters and set them to the function
-        this.loading = true;
-        const {page, rowsPerPage} = props.pagination;
-        this.pagination.page = page;
-        this.pagination.rowsPerPage = rowsPerPage;
+        this.loading = true
+        const {page, rowsPerPage} = props.pagination
+        this.pagination.page = page
+        this.pagination.rowsPerPage = rowsPerPage
         this.$axios.get(`/Distributor?page=${this.pagination.page}&take=${this.pagination.rowsPerPage}`)
             .then(res => {
-              this.data = res.data.result.items;
+              this.data = res.data.result.items
               this.pagination.rowsNumber = res.data.result.totalCount
-              this.loading = false;
+              this.loading = false
         }).catch(() => {
-          const msg = 'ارتباط با سرور قطع است';
-          const color = 'negative';
-          const icon = 'error';
-          this.showNotification(msg, color, icon);
+          const msg = 'ارتباط با سرور قطع است'
+          const color = 'negative'
+          const icon = 'error'
+          this.showNotification(msg, color, icon)
         });
       },
       showNotification(msg, color, icon) {
@@ -171,6 +185,7 @@
             });
       },
       sendToEdit(id, firstName, lastName, mobileNumber, password, nationalId, avatarUrl, description) {
+        this.isPasswordEditing = false
         const information = {
           id,
           firstName,
@@ -182,6 +197,11 @@
           description
         }
         this.$refs.editDistributorDialog.show(information)
+      },
+      sendToEditPassword(id) {
+        // TODO: complete edit password functionality
+        this.isPasswordEditing = true
+        this.$refs.editDistributorDialog.show(id)
       }
     }
   }

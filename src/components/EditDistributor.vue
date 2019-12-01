@@ -3,12 +3,32 @@
     <q-card style="width: 60%;">
 
       <q-card-section class="row">
-        <div class="text-h6">ویرایش موزع</div>
+        <div v-if="isPasswordEditing" class="text-h6">تغییر رمز عبور</div>
+        <div v-else class="text-h6">ویرایش موزع</div>
         <q-space />
         <q-btn flat round icon="close" v-close-popup />
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section v-if="isPasswordEditing">
+        <div class="row">
+          <q-input
+            ref="password"
+            :rules="[val => !!val]"
+            class="col-6 q-pr-sm q-pb-sm"
+            outlined
+            v-model="distributorToEdit.password"
+            label="رمز عبور" />
+          <q-input
+            ref="repeatedPassword"
+            :rules="[val => !!val]"
+            class="col-6 q-pl-sm q-pb-sm"
+            outlined
+            v-model="distributorToEdit.repeatedPassword"
+            label="تکرار رمز عبور" />
+        </div>
+      </q-card-section>
+
+      <q-card-section v-else>
         <div class="row">
           <q-input
             ref="firstName"
@@ -52,6 +72,14 @@
 
       <q-card-actions align="right">
         <q-btn
+          v-if="isPasswordEditing"
+          @click="editDistributor"
+          flat
+          label="تغییر"
+          color="primary"
+        />
+        <q-btn
+          v-else
           @click="editDistributor"
           flat
           label="ویرایش"
@@ -64,6 +92,7 @@
 
 <script>
   export default {
+    props: ['isPasswordEditing'],
     data() {
       return {
         editDistributorResult: '',
@@ -72,6 +101,8 @@
           firstName: '',
           lastName: '',
           mobileNumber: '',
+          password: '',
+          repeatedPassword: '',
           nationalId: '',
           avatarUrl: '',
           description: ''
@@ -80,13 +111,15 @@
     },
     methods: {
       show(information) {
-        this.distributorToEdit.id = information.id
-        this.distributorToEdit.firstName = information.firstName
-        this.distributorToEdit.lastName = information.lastName
-        this.distributorToEdit.mobileNumber = information.mobileNumber
-        this.distributorToEdit.nationalId = information.nationalId
-        this.distributorToEdit.avatarUrl = information.avatarUrl
-        this.distributorToEdit.description = information.description
+        if (!this.isPasswordEditing) {
+          this.distributorToEdit.id = information.id
+          this.distributorToEdit.firstName = information.firstName
+          this.distributorToEdit.lastName = information.lastName
+          this.distributorToEdit.mobileNumber = information.mobileNumber
+          this.distributorToEdit.nationalId = information.nationalId
+          this.distributorToEdit.avatarUrl = information.avatarUrl
+          this.distributorToEdit.description = information.description
+        }
         this.$refs.editDialog.show()
       },
       hide() {
@@ -117,8 +150,7 @@
         this.$refs.mobileNumber.validate()
         this.$refs.nationalId.validate()
         return !(this.$refs.firstName.hasError || this.$refs.lastName.hasError ||
-            this.$refs.nationalId.hasError ||
-            this.$refs.mobileNumber.hasError)
+            this.$refs.nationalId.hasError || this.$refs.mobileNumber.hasError)
       },
       showNotification(msg, color, icon) {
         this.$q.notify({
@@ -130,13 +162,14 @@
         })
       },
       resetToDefaults() {
-        this.distributorToEdit.firstName = '';
-        this.distributorToEdit.lastName = '';
-        this.distributorToEdit.mobileNumber = '';
-        this.distributorToEdit.avatarUrl = '';
-        this.distributorToEdit.description = '';
-        this.distributorToEdit.nationalId = '';
-        this.addDistributorResult = '';
+        this.distributorToEdit.id = ''
+        this.distributorToEdit.firstName = ''
+        this.distributorToEdit.lastName = ''
+        this.distributorToEdit.mobileNumber = ''
+        this.distributorToEdit.avatarUrl = ''
+        this.distributorToEdit.description = ''
+        this.distributorToEdit.nationalId = ''
+        this.editDistributorResult = ''
       }
     }
   }
