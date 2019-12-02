@@ -228,8 +228,9 @@
       },
       searchDistributor() {
         if (this.distributorToSearch !== '') {
+          this.pagination.page = 1
           this.loading = true
-          this.$axios.get(`Distributor/search?Q=${this.distributorToSearch}&page=${this.pagination.page}`)
+          this.$axios.get(`Distributor/search?Q=${this.distributorToSearch}&page=${this.pagination.page}&take=7`)
               .then(res => {
                 this.data = res.data.result.items
                 this.pagination.rowsNumber = res.data.result.totalCount
