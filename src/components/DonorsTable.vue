@@ -57,10 +57,12 @@
       </template>
 
     </q-table>
+
   </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   export default {
     data() {
       return {
@@ -139,6 +141,7 @@
       }
     },
     methods: {
+      ...mapActions('donors', ['editDonor']),
       reloadTable() {
         this.onRequest({
           pagination: this.pagination
@@ -152,7 +155,6 @@
         this.pagination.rowsPerPage = rowsPerPage;
         this.$axios.get(`/Donor?page=${this.pagination.page}&take=${this.pagination.rowsPerPage}`)
             .then(res => {
-              console.log(res.data) // TODO: Remove this log
               this.data = res.data.result.items;
               this.pagination.rowsNumber = res.data.result.totalCount
               this.loading = false;
@@ -175,18 +177,8 @@
               this.showNotification('ارتباط با سرور قطع است', 'negative', 'error')
             });
       },
-      sendToEdit(id, fullName, address, phoneNumber, mobileNumber, geoLocation, avatarUrl, description) {
-        const information = {
-          id,
-          fullName,
-          address,
-          phoneNumber,
-          mobileNumber,
-          geoLocation,
-          avatarUrl,
-          description
-        }
-        this.$refs.editDistributorDialog.show(information)
+      sendToEdit(id) {
+        this.$router.push(`/donors/edit-donor?id=${id}`)
       },
       showNotification(msg, color, icon) {
         this.$q.notify({

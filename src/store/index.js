@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import distributors from './distributors-store'
+import donors from './donors-store'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      distributors
+      distributors,
+      donors
     },
 
     // enable strict mode (adds overhead!)

@@ -38,7 +38,7 @@
             <q-item-label>موزعین</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item exact clickable to="/donators">
+        <q-item exact clickable to="/donors">
           <q-item-section>
             <q-item-label>خیرین</q-item-label>
           </q-item-section>
