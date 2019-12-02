@@ -1,19 +1,8 @@
 <template>
   <div class="q-pa-md">
-    <q-input
-      @keyup.enter="search"
-      v-model="distributorToSearch"
-      filled
-      label="جستجو"
-    >
-      <template v-slot:append>
-        <q-icon class="cursor-pointer" />
-        <q-icon name="search" />
-      </template>
-    </q-input>
 
-    <!-- TODO: create table component -->
-    <distributors-table class="q-mt-sm" ref="distributorsTable" />
+
+    <distributors-table ref="distributorsTable" />
 
     <add-distributor ref="addDialog" @successAdd="$refs.distributorsTable.reloadTable()" />
 
@@ -38,13 +27,7 @@
     },
     data() {
       return {
-        distributorToSearch: ''
-      }
-    },
-    methods: {
-      search() {
-        // TODO: Complete search distributor
-        console.log(this.distributorToSearch);
+
       }
     }
   }

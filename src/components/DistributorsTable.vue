@@ -1,5 +1,22 @@
 <template>
   <div>
+    <q-input
+      class="q-mb-sm"
+      @keyup.enter="searchDistributor"
+      v-model="distributorToSearch"
+      filled
+      label="جستجو"
+    >
+      <template v-slot:prepend>
+        <q-icon class="cursor-pointer" />
+        <q-icon name="search" />
+      </template>
+      <template  v-slot:append>
+        <q-icon class="curser-pointer" />
+        <q-icon @click="distributorToSearch = ''" v-if="distributorToSearch !== ''" name="close" />
+      </template>
+    </q-input>
+
     <q-table
       :loading="loading"
       @request="onRequest"
@@ -31,7 +48,6 @@
           <q-td key="description" :props="props">
             {{ props.row.description }}
           </q-td>
-          <!-- TODO: create operations for distributor -->
           <q-td key="operations" :props="props">
             <q-btn dense flat round color="primary" icon="add" />
             <q-btn
@@ -75,6 +91,7 @@
     },
     data() {
       return {
+        distributorToSearch: '',
         isPasswordEditing: false,
         loading: false,
         pagination: {
@@ -139,6 +156,13 @@
     mounted() {
       this.reloadTable()
     },
+    watch: {
+      distributorToSearch() {
+        if (this.distributorToSearch === '') {
+          this.reloadTable()
+        }
+      }
+    },
     methods: {
       reloadTable() {
         this.onRequest({
@@ -146,7 +170,6 @@
         })
       },
       onRequest(props) {
-        // TODO: Read about parameters and set them to the function
         this.loading = true
         const {page, rowsPerPage} = props.pagination
         this.pagination.page = page
@@ -202,6 +225,20 @@
         // TODO: complete edit password functionality
         this.isPasswordEditing = true
         this.$refs.editDistributorDialog.show(id)
+      },
+      searchDistributor() {
+        if (this.distributorToSearch !== '') {
+          this.loading = true
+          this.$axios.get(`Distributor/search?Q=${this.distributorToSearch}&page=${this.pagination.page}`)
+              .then(res => {
+                this.data = res.data.result.items
+                this.pagination.rowsNumber = res.data.result.totalCount
+                this.loading = false
+              })
+              .catch(err => {
+                console.log(err.message)
+              })
+        }
       }
     }
   }
