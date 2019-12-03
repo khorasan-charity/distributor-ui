@@ -91,8 +91,11 @@
             this.donorToEdit.avatarUrl = res.data.result.avatarUrl
             this.donorToEdit.description = res.data.result.description
           })
-          .catch(err => {
-            console.log(err.message)
+          .catch(() => {
+            const msg = 'مشکل در برقراری ارتباط با سرور'
+            const color = 'ngeative'
+            const icon = 'error'
+            this.showNotification(msg, color, icon)
           })
     },
     methods: {

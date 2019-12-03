@@ -225,7 +225,10 @@
                 this.loading = false
               })
               .catch(err => {
-                console.log(err.message)
+                const msg = 'مشکل در برقراری ارتباط با سرور'
+                const color = 'negative'
+                const icon = 'error'
+                this.showNotification(msg, color, icon)
               })
         }
       }
