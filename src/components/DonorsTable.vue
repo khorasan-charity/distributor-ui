@@ -1,5 +1,22 @@
 <template>
   <div>
+    <q-input
+      class="q-mb-sm"
+      @keyup.enter="searchDonor"
+      v-model="donorToSearch"
+      filled
+      label="جستجو"
+    >
+      <template v-slot:prepend>
+        <q-icon class="cursor-pointer" />
+        <q-icon name="search" />
+      </template>
+      <template  v-slot:append>
+        <q-icon class="curser-pointer" />
+        <q-icon @click="donorToSearch = ''" v-if="donorToSearch !== ''" name="close" />
+      </template>
+    </q-input>
+
     <q-table
       :loading="loading"
       @request="onRequest"
@@ -66,6 +83,7 @@
   export default {
     data() {
       return {
+        donorToSearch: '',
         loading: false,
         pagination: {
           rowsPerPage: 7,
@@ -140,6 +158,13 @@
         data: []
       }
     },
+    watch: {
+      donorToSearch() {
+        if (this.donorToSearch === '') {
+          this.reloadTable()
+        }
+      }
+    },
     methods: {
       ...mapActions('donors', ['editDonor']),
       reloadTable() {
@@ -188,6 +213,21 @@
           textColor: 'white',
           timeout: 1000
         })
+      },
+      searchDonor() {
+        if (this.donorToSearch !== '') {
+          this.pagination.page = 1
+          this.loading = true
+          this.$axios.get(`Donor/search?Q=${this.donorToSearch}&page=${this.pagination.page}&take=7`)
+              .then(res => {
+                this.data = res.data.result.items
+                this.pagination.rowsNumber = res.data.result.totalCount
+                this.loading = false
+              })
+              .catch(err => {
+                console.log(err.message)
+              })
+        }
       }
     },
     mounted() {

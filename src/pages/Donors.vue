@@ -1,16 +1,5 @@
 <template>
   <div class="q-pa-md">
-    <q-input
-      @keyup.enter="search"
-      v-model="donorToSearch"
-      filled
-      label="جستجو"
-    >
-      <template v-slot:append>
-        <q-icon class="cursor-pointer" />
-        <q-icon name="search" />
-      </template>
-    </q-input>
 
     <donors-table class="q-mt-sm" ref="myTable" />
 
@@ -37,7 +26,6 @@
     },
     data() {
       return {
-        donorToSearch: ''
       }
     },
     methods: {
