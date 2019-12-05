@@ -13,7 +13,7 @@
 
         <q-toolbar-title class="text-center heading">
           <div class="q-pr-xl">
-            حمایت از بیماران سرطانی خراسان رضوی
+            حمایت از کودکان مبتلا به سرطان خراسان رضوی
           </div>
         </q-toolbar-title>
       </q-toolbar>

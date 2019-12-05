@@ -49,7 +49,6 @@
             {{ props.row.description }}
           </q-td>
           <q-td key="operations" :props="props">
-            <q-btn dense flat round color="primary" icon="add" />
             <q-btn
               @click="sendToEdit(props.row.id, props.row.firstName, props.row.lastName, props.row.mobileNumber, props.row.password, props.row.nationalId, props.row.avatarUrl, props.row.description)"
               dense
@@ -222,7 +221,7 @@
         this.$refs.editDistributorDialog.show(information)
       },
       sendToEditPassword(id) {
-        // TODO: complete edit password functionality
+        // TODO: complete edit password functionality => Mr. Hatami
         this.isPasswordEditing = true
         this.$refs.editDistributorDialog.show(id)
       },

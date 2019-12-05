@@ -11,7 +11,7 @@
         <q-icon class="cursor-pointer" />
         <q-icon name="search" />
       </template>
-      <template  v-slot:append>
+      <template v-slot:append>
         <q-icon class="curser-pointer" />
         <q-icon @click="donorToSearch = ''" v-if="donorToSearch !== ''" name="close" />
       </template>
@@ -53,7 +53,6 @@
           </q-td>
           <!-- TODO: create operations for donor -->
           <q-td key="operations" :props="props">
-            <q-btn dense flat round color="primary" icon="add" />
             <q-btn
               @click="sendToEdit(props.row.id, props.row.fullName, props.row.address, props.row.phoneNumber, props.row.mobileNumber, props.row.geoLocation, props.row.avatarUrl, props.row.description)"
               dense
