@@ -68,7 +68,9 @@ module.exports = function (ctx) {
         'QTr',
         'QTd',
         'QBadge',
-        'QForm'
+        'QForm',
+        'QDate',
+        'QPopupProxy'
       ],
 
       directives: [

@@ -43,6 +43,11 @@
             <q-item-label>خیرین</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item exact clickable to="/assignments">
+          <q-item-section>
+            <q-item-label>ماموریت‌ها</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 

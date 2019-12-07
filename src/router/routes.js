@@ -19,6 +19,10 @@ const routes = [
       {
         path: '/donors/edit-donor',
         component: () => import('pages/EditDonor.vue')
+      },
+      {
+        path: '/assignments',
+        component: () => import('pages/Assignments.vue')
       }
     ]
   }
