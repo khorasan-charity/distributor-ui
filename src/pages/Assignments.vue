@@ -42,19 +42,11 @@
     data() {
       return {
         alert: false,
-        date: '',
-        assignmentToAdd: {
-          distributorId: '',
-          donorId: '',
-          dueAt: '',
-          doneAt: '',
-          description: ''
-        }
+        date: ''
       }
     },
     methods: {
       addAssignment() {
-        // TODO: complete add assignment
         this.$refs.addAssignmentComponent.show()
       }
     },

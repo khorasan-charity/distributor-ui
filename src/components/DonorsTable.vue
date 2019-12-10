@@ -51,7 +51,6 @@
           <q-td key="description" :props="props">
             {{ props.row.description }}
           </q-td>
-          <!-- TODO: create operations for donor -->
           <q-td key="operations" :props="props">
             <q-btn
               @click="sendToEdit(props.row.id, props.row.fullName, props.row.address, props.row.phoneNumber, props.row.mobileNumber, props.row.geoLocation, props.row.avatarUrl, props.row.description)"
@@ -223,7 +222,7 @@
                 this.pagination.rowsNumber = res.data.result.totalCount
                 this.loading = false
               })
-              .catch(err => {
+              .catch(() => {
                 const msg = 'مشکل در برقراری ارتباط با سرور'
                 const color = 'negative'
                 const icon = 'error'

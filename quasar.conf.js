@@ -70,7 +70,8 @@ module.exports = function (ctx) {
         'QBadge',
         'QForm',
         'QDate',
-        'QPopupProxy'
+        'QPopupProxy',
+        'QSelect'
       ],
 
       directives: [

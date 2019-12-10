@@ -20,7 +20,7 @@
     </q-header>
 
     <q-drawer
-      :width=200
+      :width=150
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -65,6 +65,8 @@ export default {
     return {
       leftDrawerOpen: false
     }
+  },
+  methods: {
   }
 }
 </script>
