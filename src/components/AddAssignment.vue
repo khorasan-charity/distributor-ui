@@ -4,7 +4,7 @@
       <q-card-section class="row">
         <div class="text-h6">ماموریت جدید</div>
         <q-space />
-        <q-btn @click="resetform" flat round icon="close" v-close-popup />
+        <q-btn @click="resetForm" flat round icon="close" v-close-popup />
       </q-card-section>
 
       <q-card-section>
@@ -114,7 +114,7 @@
       addAssignment() {
         console.log(this.model.value)
       },
-      resetform() {
+      resetForm() {
         this.assignmentToAdd = {
           distributorId: '',
           donorId: '',
