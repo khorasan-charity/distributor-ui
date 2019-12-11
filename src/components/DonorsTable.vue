@@ -54,6 +54,7 @@
           <q-td key="operations" :props="props">
             <div v-if="isDonorSelecting">
               <q-btn
+                @click="$emit('add', {id: props.row.id, fullName: props.row.fullName})"
                 color="primary"
                 label="انتخاب" />
             </div>

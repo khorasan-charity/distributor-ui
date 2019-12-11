@@ -65,14 +65,14 @@
               <q-input
                 hint="برای انتخاب دکمه اینتر را بفشارید"
                 @keyup.enter="selectDistributor"
-                v-model="assignmentToAdd.distributorId"
+                v-model="selectedDistributor.fullName"
                 style="width: 49%" outlined label="موزع"
               />
               <q-input
                 hint="برای انتخاب دکمه اینتر را بفشارید"
                 v-if="model.value === 'forDonor'"
                 @keyup.enter="selectDonor"
-                v-model="assignmentToAdd.donorId"
+                v-model="selectedDonor.fullName"
                 style="width: 49%" outlined label="خیر"
               />
               <q-input
@@ -114,8 +114,16 @@
         </q-card-section>
 
         <q-card-section>
-          <distributors-table :is-distributor-selecting="true" v-if="isDistributorToSelect" />
-          <donors-table :is-donor-selecting="true" v-else />
+          <distributors-table
+            v-if="isDistributorToSelect"
+            :is-distributor-selecting="true"
+            @add="(info) => updateFormContent(info)"
+          />
+          <donors-table
+            v-else
+            :is-donor-selecting="true"
+            @add="(info) => updateFormContent(info)"
+          />
         </q-card-section>
 
 <!--        <q-card-actions align="right">-->
@@ -142,6 +150,12 @@
       return {
         isDistributorToSelect: true,
         showSelectDialog: false,
+        selectedDistributor: {
+          fullName: ''
+        },
+        selectedDonor: {
+          fullName: ''
+        },
         model: {
           label: 'هیچ کدام',
           value: ''
@@ -191,6 +205,12 @@
           label: 'هیچ کدام',
           value: ''
         }
+        this.selectedDonor = {
+          fullName: ''
+        }
+        this.selectedDistributor = {
+          fullName: ''
+        }
       },
       selectDistributor() {
         this.showSelectDialog = true
@@ -201,6 +221,15 @@
         this.showSelectDialog = true
         this.isDistributorToSelect = false
         // TODO: at keyup => dialog with donors table and select donor
+      },
+      updateFormContent(info) {
+        if (this.isDistributorToSelect) {
+          this.selectedDistributor.fullName = info.firstName + ' ' + info.lastName
+          this.assignmentToAdd.distributorId = info.id
+        } else {
+          this.selectedDonor.fullName = info.fullName
+          this.assignmentToAdd.donorId = info.id
+        }
       }
     }
   }
