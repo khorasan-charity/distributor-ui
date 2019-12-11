@@ -78,7 +78,7 @@
               <q-input
                 hint="نام ارگان را تایپ کنید"
                 v-else-if="model.value === 'noDonor'"
-                v-model="assignmentToAdd.donorId"
+                v-model="organizationName"
                 style="width: 49%"
                 outlined
                 label="ارگان"
@@ -100,6 +100,7 @@
             @click="addAssignment"
             label="ایجاد ماموریت"
             color="primary"
+            class="q-mr-sm q-mb-sm"
           />
         </q-card-actions>
       </q-card>
@@ -150,6 +151,7 @@
       return {
         isDistributorToSelect: true,
         showSelectDialog: false,
+        organizationName: '',
         selectedDistributor: {
           fullName: ''
         },
@@ -211,6 +213,7 @@
         this.selectedDistributor = {
           fullName: ''
         }
+        this.organizationName = ''
       },
       selectDistributor() {
         this.showSelectDialog = true
@@ -230,6 +233,7 @@
           this.selectedDonor.fullName = info.fullName
           this.assignmentToAdd.donorId = info.id
         }
+        this.showSelectDialog = false
       }
     }
   }
