@@ -1,82 +1,147 @@
 <template>
-  <q-dialog persistent ref="addAssignmentDialog">
-    <q-card style="width: 800px; max-width: 80vw;">
-      <q-card-section class="row">
-        <div class="text-h6">ماموریت جدید</div>
-        <q-space />
-        <q-btn @click="resetForm" flat round icon="close" v-close-popup />
-      </q-card-section>
+  <div>
+    <q-dialog persistent ref="addAssignmentDialog">
+      <q-card style="width: 800px; max-width: 80vw;">
+        <q-card-section class="row">
+          <div class="text-h6">ماموریت جدید</div>
+          <q-space />
+          <q-btn @click="resetForm" flat round icon="close" v-close-popup />
+        </q-card-section>
 
-      <q-card-section>
-        <div style="margin-bottom: 10px">
-          <q-select outlined v-model="model" :options="options" label="نوع ماموریت" />
-        </div>
-        <div v-if="model.value">
-          <div style="display: flex; justify-content: space-between;">
-            <q-input outlined label="تاریخ انجام" style="width: 49%" v-model="assignmentToAdd.dueAt">
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date
-                      today-btn
-                      calendar="persian"
-                      v-model="assignmentToAdd.dueAt"
-                      @input="() => $refs.qDateProxy.hide()"
-                    />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-input outlined label="تاریخ اتمام" style="width: 49%" v-model="assignmentToAdd.doneAt">
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date
-                      today-btn
-                      calendar="persian"
-                      v-model="assignmentToAdd.doneAt"
-                      @input="() => $refs.qDateProxy.hide()"
-                    />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
+        <q-card-section>
+          <div style="margin-bottom: 10px">
+            <q-select outlined v-model="model" :options="options" label="نوع ماموریت" />
           </div>
-          <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-            <q-input v-model="assignmentToAdd.distributorId" style="width: 49%" outlined label="موزع" />
-            <q-input
-              v-if="model.value === 'forDonor'"
-              v-model="assignmentToAdd.donorId" style="width: 49%" outlined label="خیر" />
-            <q-input
-              v-else-if="model.value === 'noDonor'"
-              v-model="assignmentToAdd.donorId" style="width: 49%" outlined label="ارگان" />
+          <div v-if="model.value">
+            <div style="display: flex; justify-content: space-between;">
+              <q-input
+                outlined
+                label="تاریخ انجام"
+                style="width: 49%"
+                v-model="assignmentToAdd.dueAt"
+              >
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      ref="qDateProxyForDistributor"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        today-btn
+                        calendar="persian"
+                        v-model="assignmentToAdd.dueAt"
+                        @input="() => $refs.qDateProxyForDistributor.hide()"
+                      />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                label="تاریخ اتمام"
+                style="width: 49%"
+                v-model="assignmentToAdd.doneAt"
+              >
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      ref="qDateProxyForDonor"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        today-btn
+                        calendar="persian"
+                        v-model="assignmentToAdd.doneAt"
+                        @input="() => $refs.qDateProxyForDonor.hide()"
+                      />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+              <q-input
+                hint="برای انتخاب دکمه اینتر را بفشارید"
+                @keyup.enter="selectDistributor"
+                v-model="assignmentToAdd.distributorId"
+                style="width: 49%" outlined label="موزع"
+              />
+              <q-input
+                hint="برای انتخاب دکمه اینتر را بفشارید"
+                v-if="model.value === 'forDonor'"
+                @keyup.enter="selectDonor"
+                v-model="assignmentToAdd.donorId"
+                style="width: 49%" outlined label="خیر"
+              />
+              <q-input
+                hint="نام ارگان را تایپ کنید"
+                v-else-if="model.value === 'noDonor'"
+                v-model="assignmentToAdd.donorId"
+                style="width: 49%"
+                outlined
+                label="ارگان"
+              />
+            </div>
+            <div style="margin-top: 10px;">
+              <q-input
+                v-model="assignmentToAdd.description"
+                autogrow outlined
+                label="توضیحات"
+              />
+            </div>
           </div>
-          <div style="margin-top: 10px;">
-            <q-input v-model="assignmentToAdd.description" autogrow outlined label="توضیحات" />
-          </div>
-        </div>
-      </q-card-section>
+        </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn :disable="!model.value" @click="addAssignment" flat label="ایجاد ماموریت" color="primary" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+        <q-card-actions align="right">
+          <q-btn
+            :disable="!model.value"
+            @click="addAssignment"
+            label="ایجاد ماموریت"
+            color="primary"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog full-width v-model="showSelectDialog">
+      <q-card style="height: 700px">
+        <q-card-section class="row">
+          <div class="text-h6">{{isDistributorToSelect ? 'انتخاب موزع' : 'انتخاب خیر'}}</div>
+          <q-space />
+<!--          <q-btn color="white" class="bg-blue-grey-6" flat label="بستن" v-close-popup />-->
+        </q-card-section>
+
+        <q-card-section>
+          <distributors-table :is-distributor-selecting="true" v-if="isDistributorToSelect" />
+          <donors-table :is-donor-selecting="true" v-else />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            class="bg-blue-grey-6 absolute-bottom-right q-mr-md q-mb-md"
+            label="بستن"
+            color="white"
+            v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  </div>
 </template>
 
 <script>
+  import DistributorsTable from "./DistributorsTable.vue"
+  import DonorsTable from "./DonorsTable.vue"
   export default {
+    components: {
+      DistributorsTable,
+      DonorsTable
+    },
     data() {
       return {
-        medium: false,
+        isDistributorToSelect: true,
+        showSelectDialog: false,
         model: {
           label: 'هیچ کدام',
           value: ''
@@ -91,7 +156,7 @@
             value: 'forDonor'
           },
           {
-            label: 'نامرتبط با خیر',
+            label: 'متفرقه',
             value: 'noDonor'
           }
         ],
@@ -126,6 +191,16 @@
           label: 'هیچ کدام',
           value: ''
         }
+      },
+      selectDistributor() {
+        this.showSelectDialog = true
+        this.isDistributorToSelect = true
+        // TODO: at keyup => dialog with distributors table and select distributor
+      },
+      selectDonor() {
+        this.showSelectDialog = true
+        this.isDistributorToSelect = false
+        // TODO: at keyup => dialog with donors table and select donor
       }
     }
   }

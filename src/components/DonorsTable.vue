@@ -52,21 +52,28 @@
             {{ props.row.description }}
           </q-td>
           <q-td key="operations" :props="props">
-            <q-btn
-              @click="sendToEdit(props.row.id, props.row.fullName, props.row.address, props.row.phoneNumber, props.row.mobileNumber, props.row.geoLocation, props.row.avatarUrl, props.row.description)"
-              dense
-              flat
-              round
-              color="blue"
-              icon="edit" />
-            <q-btn dense flat round color="brown-6" icon="camera" />
-            <q-btn
-              @click="deleteDonor(props.row.id)"
-              dense
-              flat
-              round
-              color="red"
-              icon="delete" />
+            <div v-if="isDonorSelecting">
+              <q-btn
+                color="primary"
+                label="انتخاب" />
+            </div>
+            <div v-else>
+              <q-btn
+                @click="sendToEdit(props.row.id, props.row.fullName, props.row.address, props.row.phoneNumber, props.row.mobileNumber, props.row.geoLocation, props.row.avatarUrl, props.row.description)"
+                dense
+                flat
+                round
+                color="blue"
+                icon="edit" />
+              <q-btn dense flat round color="brown-6" icon="camera" />
+              <q-btn
+                @click="deleteDonor(props.row.id)"
+                dense
+                flat
+                round
+                color="red"
+                icon="delete" />
+            </div>
           </q-td>
         </q-tr>
       </template>
@@ -79,6 +86,7 @@
 <script>
   import { mapActions } from 'vuex'
   export default {
+    props: ['isDonorSelecting'],
     data() {
       return {
         donorToSearch: '',
@@ -171,7 +179,6 @@
         })
       },
       onRequest(props) {
-        // TODO: Read about parameters and set them to the function
         this.loading = true;
         const {page, rowsPerPage} = props.pagination;
         this.pagination.page = page;

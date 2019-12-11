@@ -2,7 +2,7 @@
   <div class="q-pa-md">
 
 
-    <distributors-table ref="distributorsTable" />
+    <distributors-table :is-distributor-selecting="false" ref="distributorsTable" />
 
     <add-distributor ref="addDialog" @successAdd="$refs.distributorsTable.reloadTable()" />
 

@@ -49,26 +49,33 @@
             {{ props.row.description }}
           </q-td>
           <q-td key="operations" :props="props">
-            <q-btn
-              @click="sendToEdit(props.row.id, props.row.firstName, props.row.lastName, props.row.mobileNumber, props.row.password, props.row.nationalId, props.row.avatarUrl, props.row.description)"
-              dense
-              flat
-              round
-              color="blue"
-              icon="edit" />
-            <q-btn dense flat round color="brown-6" icon="camera" />
-            <q-btn
-              @click="deleteDistributor(props.row.id)"
-              dense
-              flat
-              round
-              color="red"
-              icon="delete" />
-            <q-btn
-              @click="sendToEditPassword(props.row.id)"
-              push
-              color="purple"
-              label="تغییر رمز" />
+            <div v-if="isDistributorSelecting">
+              <q-btn
+                color="primary"
+                label="انتخاب" />
+            </div>
+            <div v-else>
+              <q-btn
+                @click="sendToEdit(props.row.id, props.row.firstName, props.row.lastName, props.row.mobileNumber, props.row.password, props.row.nationalId, props.row.avatarUrl, props.row.description)"
+                dense
+                flat
+                round
+                color="blue"
+                icon="edit" />
+              <q-btn dense flat round color="brown-6" icon="camera" />
+              <q-btn
+                @click="deleteDistributor(props.row.id)"
+                dense
+                flat
+                round
+                color="red"
+                icon="delete" />
+              <q-btn
+                @click="sendToEditPassword(props.row.id)"
+                push
+                color="purple"
+                label="تغییر رمز" />
+            </div>
           </q-td>
         </q-tr>
       </template>
@@ -85,6 +92,7 @@
 <script>
   import EditDistributor from "./EditDistributor.vue";
   export default {
+    props: ['isDistributorSelecting'],
     components: {
       EditDistributor
     },

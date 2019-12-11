@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
 
-    <donors-table class="q-mt-sm" ref="myTable" />
+    <donors-table :is-donor-selecting="false" class="q-mt-sm" ref="myTable" />
 
     <add-donor ref="addDialog" @successAdd="$refs.myTable.reloadTable()" />
 
