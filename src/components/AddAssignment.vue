@@ -106,11 +106,11 @@
     </q-dialog>
 
     <q-dialog full-width v-model="showSelectDialog">
-      <q-card style="height: 700px">
+      <q-card>
         <q-card-section class="row">
           <div class="text-h6">{{isDistributorToSelect ? 'انتخاب موزع' : 'انتخاب خیر'}}</div>
           <q-space />
-<!--          <q-btn color="white" class="bg-blue-grey-6" flat label="بستن" v-close-popup />-->
+          <q-btn color="white" class="bg-blue-grey-6" flat label="بستن" v-close-popup />
         </q-card-section>
 
         <q-card-section>
@@ -118,13 +118,13 @@
           <donors-table :is-donor-selecting="true" v-else />
         </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn
-            class="bg-blue-grey-6 absolute-bottom-right q-mr-md q-mb-md"
-            label="بستن"
-            color="white"
-            v-close-popup />
-        </q-card-actions>
+<!--        <q-card-actions align="right">-->
+<!--          <q-btn-->
+<!--            class="bg-blue-grey-6 q-mr-sm"-->
+<!--            label="بستن"-->
+<!--            color="white"-->
+<!--            v-close-popup />-->
+<!--        </q-card-actions>-->
       </q-card>
     </q-dialog>
   </div>
