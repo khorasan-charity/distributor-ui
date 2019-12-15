@@ -22,7 +22,7 @@
     </div>
 
     <q-btn
-      @click="addAssignment"
+      @click="showAddAssignment"
       round
       icon="add"
       class="fixed-bottom-right q-mr-md q-mb-md"
@@ -46,7 +46,7 @@
       }
     },
     methods: {
-      addAssignment() {
+      showAddAssignment() {
         this.$refs.addAssignmentComponent.show()
       }
     },

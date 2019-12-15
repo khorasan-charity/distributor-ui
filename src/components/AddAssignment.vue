@@ -120,11 +120,22 @@
             :is-distributor-selecting="true"
             @add="(info) => updateFormContent(info)"
           />
-          <donors-table
-            v-else
-            :is-donor-selecting="true"
-            @add="(info) => updateFormContent(info)"
-          />
+          <div v-else>
+            <donors-table
+              ref="donorsTable"
+              :is-donor-selecting="true"
+              @add="(info) => updateFormContent(info)"
+            />
+            <div class="myDiv">
+              <q-btn
+                flat
+                color="primary"
+                class="q-mt-md"
+                label="خیر جدید"
+                @click="addNewDonor"
+              />
+            </div>
+          </div>
         </q-card-section>
 
 <!--        <q-card-actions align="right">-->
@@ -136,16 +147,21 @@
 <!--        </q-card-actions>-->
       </q-card>
     </q-dialog>
+
+    <add-donor @successAdd="$refs.donorsTable.reloadTable()" ref="addDonorDialog" />
+
   </div>
 </template>
 
 <script>
   import DistributorsTable from "./DistributorsTable.vue"
   import DonorsTable from "./DonorsTable.vue"
+  import AddDonor from '../components/AddDonor.vue'
   export default {
     components: {
       DistributorsTable,
-      DonorsTable
+      DonorsTable,
+      AddDonor
     },
     data() {
       return {
@@ -234,11 +250,17 @@
           this.assignmentToAdd.donorId = info.id
         }
         this.showSelectDialog = false
+      },
+      addNewDonor() {
+        this.$refs.addDonorDialog.show()
       }
     }
   }
 </script>
 
 <style scoped>
-
+  .myDiv {
+    display: flex;
+    justify-content: flex-end;
+  }
 </style>
