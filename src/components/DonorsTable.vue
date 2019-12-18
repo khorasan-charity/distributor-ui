@@ -54,19 +54,42 @@
           <q-td key="operations" :props="props">
             <div v-if="isDonorSelecting">
               <q-btn
+                @click="sendToEdit({
+                  id: props.row.id,
+                  fullName: props.row.fullName,
+                  address: props.row.address,
+                  phoneNumber: props.row.phoneNumber,
+                  mobileNumber: props.row.mobileNumber,
+                  geoLocation: props.row.geoLocation,
+                  description: props.row.description
+                  })"
+                dense
+                class="q-mr-sm"
+                flat
+                round
+                color="blue"
+                icon="edit" />
+              <q-btn
                 @click="$emit('add', {id: props.row.id, fullName: props.row.fullName})"
                 color="primary"
                 label="انتخاب" />
             </div>
             <div v-else>
               <q-btn
-                @click="sendToEdit(props.row.id, props.row.fullName, props.row.address, props.row.phoneNumber, props.row.mobileNumber, props.row.geoLocation, props.row.avatarUrl, props.row.description)"
+                @click="sendToEdit({
+                  id: props.row.id,
+                  fullName: props.row.fullName,
+                  address: props.row.address,
+                  phoneNumber: props.row.phoneNumber,
+                  mobileNumber: props.row.mobileNumber,
+                  geoLocation: props.row.geoLocation,
+                  description: props.row.description
+                  })"
                 dense
                 flat
                 round
                 color="blue"
                 icon="edit" />
-              <q-btn dense flat round color="brown-6" icon="camera" />
               <q-btn
                 @click="deleteDonor(props.row.id)"
                 dense
@@ -81,12 +104,17 @@
 
     </q-table>
 
+    <edit-donor ref="editDonorDialog" @successEdit="reloadTable" />
+
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import EditDonor from '../components/EditDonor.vue'
   export default {
+    components: {
+      EditDonor
+    },
     props: ['isDonorSelecting'],
     data() {
       return {
@@ -173,7 +201,6 @@
       }
     },
     methods: {
-      ...mapActions('donors', ['editDonor']),
       reloadTable() {
         this.onRequest({
           pagination: this.pagination
@@ -208,8 +235,8 @@
               this.showNotification('ارتباط با سرور قطع است', 'negative', 'error')
             });
       },
-      sendToEdit(id) {
-        this.$router.push(`/donors/edit-donor?id=${id}`)
+      sendToEdit(information) {
+        this.$refs.editDonorDialog.show(information)
       },
       showNotification(msg, color, icon) {
         this.$q.notify({

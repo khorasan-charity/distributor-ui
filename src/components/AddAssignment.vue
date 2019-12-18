@@ -128,10 +128,10 @@
             />
             <div class="myDiv">
               <q-btn
-                flat
                 color="primary"
                 class="q-mt-md"
-                label="خیر جدید"
+                round
+                icon="add"
                 @click="addNewDonor"
               />
             </div>
@@ -149,6 +149,7 @@
     </q-dialog>
 
     <add-donor @successAdd="$refs.donorsTable.reloadTable()" ref="addDonorDialog" />
+    <edit-donor />
 
   </div>
 </template>
@@ -157,11 +158,13 @@
   import DistributorsTable from "./DistributorsTable.vue"
   import DonorsTable from "./DonorsTable.vue"
   import AddDonor from '../components/AddDonor.vue'
+  import EditDonor from '../components/EditDonor.vue'
   export default {
     components: {
       DistributorsTable,
       DonorsTable,
-      AddDonor
+      AddDonor,
+      EditDonor
     },
     data() {
       return {
@@ -234,12 +237,10 @@
       selectDistributor() {
         this.showSelectDialog = true
         this.isDistributorToSelect = true
-        // TODO: at keyup => dialog with distributors table and select distributor
       },
       selectDonor() {
         this.showSelectDialog = true
         this.isDistributorToSelect = false
-        // TODO: at keyup => dialog with donors table and select donor
       },
       updateFormContent(info) {
         if (this.isDistributorToSelect) {

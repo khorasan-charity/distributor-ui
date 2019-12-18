@@ -17,10 +17,6 @@ const routes = [
         component: () => import('pages/Donors.vue')
       },
       {
-        path: '/donors/edit-donor',
-        component: () => import('pages/EditDonor.vue')
-      },
-      {
         path: '/assignments',
         component: () => import('pages/Assignments.vue')
       }

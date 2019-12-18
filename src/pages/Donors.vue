@@ -11,7 +11,8 @@
       round
       icon="add"
       class="fixed-bottom-right q-mr-md q-mb-md"
-      color="primary" />
+      color="primary"
+    />
 
   </div>
 </template>
@@ -29,9 +30,6 @@
       }
     },
     methods: {
-      search() {
-        console.log('search for donor: ', this.donorToSearch)
-      }
     }
   }
 </script>
