@@ -9,8 +9,22 @@
         </q-card-section>
 
         <q-card-section>
-          <div style="margin-bottom: 10px">
-            <q-select outlined v-model="model" :options="options" label="نوع ماموریت" />
+          <div class="selectListContainer" style="margin-bottom: 10px">
+            <q-select
+              outlined
+              v-model="model"
+              :options="scheduleTypes"
+              label="نوع ماموریت"
+              style="width: 80%"
+            />
+            <q-btn
+              @click="$refs.addScheduleTypeComponent.show()"
+              flat
+              dense
+              color="primary"
+              label="نوع جدید"
+              style="width: 19%"
+            />
           </div>
           <div v-if="model.value">
             <div style="display: flex; justify-content: space-between;">
@@ -70,18 +84,22 @@
               />
               <q-input
                 hint="برای انتخاب دکمه اینتر را بفشارید"
-                v-if="model.value === 'forDonor'"
+                v-if="model.label !== 'متفرقه'"
                 @keyup.enter="selectDonor"
                 v-model="selectedDonor.fullName"
                 style="width: 49%" outlined label="خیر"
+                :rules="[value => value.length > 0]"
+                ref="selectedDonorInput"
               />
               <q-input
                 hint="نام ارگان را تایپ کنید"
-                v-else-if="model.value === 'noDonor'"
+                v-else-if="model.label === 'متفرقه'"
                 v-model="organizationName"
                 style="width: 49%"
                 outlined
                 label="ارگان"
+                :rules="[value => value.length > 0]"
+                ref="organizationInput"
               />
             </div>
             <div style="margin-top: 10px;">
@@ -151,20 +169,26 @@
     <add-donor @successAdd="$refs.donorsTable.reloadTable()" ref="addDonorDialog" />
     <edit-donor />
 
+    <add-schedule-type ref="addScheduleTypeComponent" />
+
   </div>
 </template>
 
 <script>
-  import DistributorsTable from "./DistributorsTable.vue"
-  import DonorsTable from "./DonorsTable.vue"
+  const jalaali = require('jalaali-js')
+  import DistributorsTable from './DistributorsTable.vue'
+  import DonorsTable from './DonorsTable.vue'
   import AddDonor from '../components/AddDonor.vue'
   import EditDonor from '../components/EditDonor.vue'
+  import AddScheduleType from '../components/AddScheduleType.vue'
+  import { mapActions, mapGetters } from 'vuex'
   export default {
     components: {
       DistributorsTable,
       DonorsTable,
       AddDonor,
-      EditDonor
+      EditDonor,
+      AddScheduleType
     },
     data() {
       return {
@@ -172,7 +196,7 @@
         showSelectDialog: false,
         organizationName: '',
         selectedDistributor: {
-          fullName: ''
+          fullName: 'نامشخص'
         },
         selectedDonor: {
           fullName: ''
@@ -181,28 +205,17 @@
           label: 'هیچ کدام',
           value: ''
         },
-        options: [
-          {
-            label: 'هیچ کدام',
-            value: ''
-          },
-          {
-            label: 'مرتبط با خیر',
-            value: 'forDonor'
-          },
-          {
-            label: 'متفرقه',
-            value: 'noDonor'
-          }
-        ],
         assignmentToAdd: {
-          distributorId: '',
+          distributorId: 1,
           donorId: '',
-          dueAt: '',
+          dueAt: this.getTodayDate(),
           doneAt: '',
           description: ''
         }
       }
+    },
+    computed: {
+      ...mapGetters('scheduleTypes', ['scheduleTypes'])
     },
     methods: {
       show() {
@@ -212,13 +225,39 @@
         this.$refs.addAssignmentDialog.hide()
       },
       addAssignment() {
+        // TODO: Must be completed
+        if (this.isFormValid()) {
+
+        } else {
+          const msg = 'ورودی‌ها به دقت بررسی شوند'
+          const color = 'negative'
+          const icon = 'error'
+          this.showNotification(msg, color, icon)
+        }
         console.log(this.model.value)
+      },
+      showNotification(msg, color, icon) {
+        this.$q.notify({
+          message: msg,
+          color: color,
+          icon: icon,
+          textColor: 'white',
+          timeout: 1000
+        })
+      },
+      isFormValid() {
+        if (this.model.label === 'متفرقه') {
+          this.$refs.organizationInput.validate()
+          return !this.$refs.organizationInput.hasError
+        }
+        this.$refs.selectedDonorInput.validate()
+        return !this.$refs.selectedDonorInput.hasError
       },
       resetForm() {
         this.assignmentToAdd = {
-          distributorId: '',
+          distributorId: 1,
           donorId: '',
-          dueAt: '',
+          dueAt: this.getTodayDate(),
           doneAt: '',
           description: ''
         }
@@ -230,7 +269,7 @@
           fullName: ''
         }
         this.selectedDistributor = {
-          fullName: ''
+          fullName: 'نامشخص'
         }
         this.organizationName = ''
       },
@@ -254,7 +293,22 @@
       },
       addNewDonor() {
         this.$refs.addDonorDialog.show()
+      },
+      getTodayDate() {
+        let today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        const yyyy = today.getFullYear();
+        today = jalaali.toJalaali(yyyy, parseInt(mm), parseInt(dd))
+        today.jd = today.jd < 10 ? '0' + today.jd.toString() : today.jd.toString()
+        today.jm = today.jm < 10 ? '0' + today.jm.toString() : today.jm.toString()
+        today.jy = today.jy.toString()
+        today = today.jy + '/' + today.jm + '/' + today.jd
+        return today
       }
+    },
+    updated() {
+      this.assignmentToAdd.dueAt = this.getTodayDate()
     }
   }
 </script>
@@ -263,5 +317,10 @@
   .myDiv {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .selectListContainer {
+    display: flex;
+    justify-content: space-between
   }
 </style>

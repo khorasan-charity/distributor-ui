@@ -22,5 +22,11 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+  // Router.beforeEach((to, from, next) => {
+  //   if (!isAuthenticated) next('/login')
+  //   // if the user is not authenticated, `next` is called twice
+  //   next()
+  // })
+
   return Router
 }
