@@ -1,11 +1,17 @@
 import axios from 'axios'
 const state = {
-  scheduleTypes: []
+  scheduleTypes: [
+    {
+      label: 'هیچ کدام',
+      value: 0
+    }
+  ]
 }
 
 const mutations = {
   reloadScheduleTypes(state, scheduleTypes) {
     state.scheduleTypes = scheduleTypes
+    console.log(state.scheduleTypes)
   }
 }
 
@@ -14,7 +20,8 @@ const actions = {
     axios.get('/ScheduleType')
       .then(res => {
         if (res.data.success) {
-          const scheduleTypes = res.data.result.map(({id, name}) => ({label: name, value: id}))
+          let scheduleTypes = res.data.result.map(({id, name}) => ({label: name, value: id}))
+          scheduleTypes.unshift({label: 'هیچ کدام', value: 0})
           commit('reloadScheduleTypes', scheduleTypes)
         }
       })

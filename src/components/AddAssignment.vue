@@ -23,14 +23,14 @@
               dense
               color="primary"
               label="نوع جدید"
-              style="width: 19%"
+              style="width: 19%; font-size: 20px"
             />
           </div>
           <div v-if="model.value">
             <div style="display: flex; justify-content: space-between;">
               <q-input
                 outlined
-                label="تاریخ انجام"
+                label="تاریخ ثبت"
                 style="width: 49%"
                 v-model="assignmentToAdd.dueAt"
               >
@@ -77,30 +77,27 @@
             </div>
             <div style="display: flex; justify-content: space-between; margin-top: 10px;">
               <q-input
-                hint="برای انتخاب دکمه اینتر را بفشارید"
-                @keyup.enter="selectDistributor"
+                hint="برای انتخاب موزع روی آدمک کلیک کنید"
+                readonly
                 v-model="selectedDistributor.fullName"
                 style="width: 49%" outlined label="موزع"
-              />
+              >
+                <template v-slot:append>
+                  <q-btn flat icon="person" @click="selectDistributor" />
+                </template>
+              </q-input>
               <q-input
-                hint="برای انتخاب دکمه اینتر را بفشارید"
-                v-if="model.label !== 'متفرقه'"
-                @keyup.enter="selectDonor"
+                hint="برای انتخاب خیر روی آدمک کلیک کنید"
+                readonly
                 v-model="selectedDonor.fullName"
                 style="width: 49%" outlined label="خیر"
-                :rules="[value => value.length > 0]"
+                :rules="[value => value.length > 0 || 'خیر باید انتخاب شود.']"
                 ref="selectedDonorInput"
-              />
-              <q-input
-                hint="نام ارگان را تایپ کنید"
-                v-else-if="model.label === 'متفرقه'"
-                v-model="organizationName"
-                style="width: 49%"
-                outlined
-                label="ارگان"
-                :rules="[value => value.length > 0]"
-                ref="organizationInput"
-              />
+              >
+                <template v-slot:append>
+                  <q-btn flat icon="person" @click="selectDonor" />
+                </template>
+              </q-input>
             </div>
             <div style="margin-top: 10px;">
               <q-input
@@ -127,9 +124,21 @@
     <q-dialog full-width v-model="showSelectDialog">
       <q-card>
         <q-card-section class="row">
-          <div class="text-h6">{{isDistributorToSelect ? 'انتخاب موزع' : 'انتخاب خیر'}}</div>
+          <div
+            class="text-h6">{{isDistributorToSelect
+            ?
+            'انتخاب موزع'
+            :
+            'انتخاب خیر'}}
+          </div>
           <q-space />
-          <q-btn color="white" class="bg-blue-grey-6" flat label="بستن" v-close-popup />
+          <q-btn
+            color="white"
+            class="bg-blue-grey-6"
+            flat
+            label="بستن"
+            v-close-popup
+          />
         </q-card-section>
 
         <q-card-section>
@@ -194,7 +203,6 @@
       return {
         isDistributorToSelect: true,
         showSelectDialog: false,
-        organizationName: '',
         selectedDistributor: {
           fullName: 'نامشخص'
         },
@@ -224,32 +232,59 @@
       hide() {
         this.$refs.addAssignmentDialog.hide()
       },
+      date2number(date) {
+        const newDate = date.replace(/\//g, '')
+        return parseInt(newDate)
+      },
       addAssignment() {
         // TODO: Must be completed
         if (this.isFormValid()) {
-
-        } else {
-          const msg = 'ورودی‌ها به دقت بررسی شوند'
-          const color = 'negative'
-          const icon = 'error'
-          this.showNotification(msg, color, icon)
+          const assignment = {
+            distributorId: this.assignmentToAdd.distributorId,
+            donorId: this.assignmentToAdd.donorId,
+            scheduleTypeId: this.model.value,
+            dueAt: this.date2number(this.assignmentToAdd.dueAt),
+            doneAt: this.date2number(this.assignmentToAdd.doneAt),
+            description: this.assignmentToAdd.description
+          }
+          this.$axios.post('/Schedule', assignment)
+            .then(res => {
+              console.log(assignment) // TODO: will be removed
+              console.log(res.data) // TODO: will be removed
+              if (res.data.result && res.data.success) {
+                this.showNotification({
+                  msg: 'ماموریت با موفقیت ایجاد شد.',
+                  color: 'primary',
+                  icon: 'thumb_up'
+                })
+                // this.hide()
+              } else {
+                this.showNotification({
+                  msg: 'ماموریت ایجاد نشد.',
+                  color: 'negative',
+                  icon: 'error'
+                })
+              }
+            })
+            .catch(() => {
+              this.showNotification({
+                msg: 'ارتباط با سرور قطع است.',
+                color: 'negative',
+                icon: 'error'
+              })
+            })
         }
-        console.log(this.model.value)
       },
-      showNotification(msg, color, icon) {
+      showNotification(notification) {
         this.$q.notify({
-          message: msg,
-          color: color,
-          icon: icon,
+          message: notification.msg,
+          color: notification.color,
+          icon: notification.icon,
           textColor: 'white',
           timeout: 1000
         })
       },
       isFormValid() {
-        if (this.model.label === 'متفرقه') {
-          this.$refs.organizationInput.validate()
-          return !this.$refs.organizationInput.hasError
-        }
         this.$refs.selectedDonorInput.validate()
         return !this.$refs.selectedDonorInput.hasError
       },
@@ -306,9 +341,6 @@
         today = today.jy + '/' + today.jm + '/' + today.jd
         return today
       }
-    },
-    updated() {
-      this.assignmentToAdd.dueAt = this.getTodayDate()
     }
   }
 </script>
