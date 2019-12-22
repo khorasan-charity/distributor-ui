@@ -1,25 +1,29 @@
 <template>
   <div>
-    <div class="q-mt-xl q-mr-md fixed-right" style="max-width: 400px">
-      <q-input v-model="date">
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy
-              ref="qDateProxy"
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date
-                today-btn
-                calendar="persian"
-                v-model="date"
-                @input="() => $refs.qDateProxy.hide()"
-              />
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
+    <div style="display: flex; justify-content: center;">
+      <div class="q-mt-md" style="width: 90%;">
+        <q-input outlined v-model="date" style="font-size: 20px;">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date
+                  today-btn
+                  calendar="persian"
+                  v-model="date"
+                  @input="() => $refs.qDateProxy.hide()"
+                />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
     </div>
+
+    <assignments-table class="q-mt-md" />
 
     <q-btn
       @click="showAddAssignment"
@@ -35,9 +39,11 @@
 <script>
   const jalaali = require('jalaali-js')
   import AddAssignment from '../components/AddAssignment.vue'
+  import AssignmentsTable from '../components/AssignmentsTable.vue'
   export default {
     components: {
-      AddAssignment
+      AddAssignment,
+      AssignmentsTable
     },
     data() {
       return {

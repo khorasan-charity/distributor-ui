@@ -164,14 +164,6 @@
             </div>
           </div>
         </q-card-section>
-
-<!--        <q-card-actions align="right">-->
-<!--          <q-btn-->
-<!--            class="bg-blue-grey-6 q-mr-sm"-->
-<!--            label="بستن"-->
-<!--            color="white"-->
-<!--            v-close-popup />-->
-<!--        </q-card-actions>-->
       </q-card>
     </q-dialog>
 
@@ -237,7 +229,6 @@
         return parseInt(newDate)
       },
       addAssignment() {
-        // TODO: Must be completed
         if (this.isFormValid()) {
           const assignment = {
             distributorId: this.assignmentToAdd.distributorId,
@@ -249,8 +240,6 @@
           }
           this.$axios.post('/Schedule', assignment)
             .then(res => {
-              console.log(assignment) // TODO: will be removed
-              console.log(res.data) // TODO: will be removed
               if (res.data.result && res.data.success) {
                 this.showNotification({
                   msg: 'ماموریت با موفقیت ایجاد شد.',
