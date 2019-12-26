@@ -3,6 +3,7 @@
     <q-header>
       <q-toolbar>
         <q-btn
+          v-if="$route.fullPath !== '/login'"
           flat
           dense
           round
@@ -20,6 +21,7 @@
     </q-header>
 
     <q-drawer
+      v-if="$route.fullPath !== '/login'"
       :width=150
       v-model="leftDrawerOpen"
       show-if-above

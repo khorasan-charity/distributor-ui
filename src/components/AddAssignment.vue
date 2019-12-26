@@ -129,7 +129,8 @@
             ?
             'انتخاب موزع'
             :
-            'انتخاب خیر'}}
+            'انتخاب خیر'
+            }}
           </div>
           <q-space />
           <q-btn
@@ -182,7 +183,7 @@
   import AddDonor from '../components/AddDonor.vue'
   import EditDonor from '../components/EditDonor.vue'
   import AddScheduleType from '../components/AddScheduleType.vue'
-  import { mapActions, mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
   export default {
     components: {
       DistributorsTable,
@@ -240,13 +241,14 @@
           }
           this.$axios.post('/Schedule', assignment)
             .then(res => {
-              if (res.data.result && res.data.success) {
+              if (res.data.success) {
                 this.showNotification({
                   msg: 'ماموریت با موفقیت ایجاد شد.',
                   color: 'primary',
                   icon: 'thumb_up'
                 })
                 // this.hide()
+                this.$emit('successAdd')
               } else {
                 this.showNotification({
                   msg: 'ماموریت ایجاد نشد.',
@@ -295,7 +297,6 @@
         this.selectedDistributor = {
           fullName: 'نامشخص'
         }
-        this.organizationName = ''
       },
       selectDistributor() {
         this.showSelectDialog = true

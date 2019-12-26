@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pa-md">
     <div style="display: flex; justify-content: center;">
       <div class="q-mt-md" style="width: 90%;">
         <q-input outlined v-model="date" style="font-size: 20px;">
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <assignments-table class="q-mt-md" />
+    <assignments-table ref="assignmentsTable" class="q-mt-md" />
 
     <q-btn
       @click="showAddAssignment"
@@ -32,7 +32,7 @@
       class="fixed-bottom-right q-mr-md q-mb-md"
       color="primary" />
 
-    <add-assignment ref='addAssignmentComponent' />
+    <add-assignment @successAdd="$refs.assignmentsTable.reloadTable()" ref='addAssignmentComponent' />
   </div>
 </template>
 
