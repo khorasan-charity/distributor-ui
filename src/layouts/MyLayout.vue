@@ -1,9 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header>
+    <q-header v-if="$route.fullPath !== '/login'">
       <q-toolbar>
         <q-btn
-          v-if="$route.fullPath !== '/login'"
           flat
           dense
           round

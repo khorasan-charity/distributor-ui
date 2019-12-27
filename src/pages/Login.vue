@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <form class="container" @submit.prevent="login">
+  <div class="container">
+    <img style="width: 450px; height: 300px" src="../assets/images/Logo.jpg" >
+    <form style="display: flex; flex-direction: column; align-items: center" @submit.prevent="login">
       <q-input
         style="width: 400px; margin-bottom: 5px"
         v-model="username"
@@ -30,7 +31,7 @@
       </q-input>
       <q-btn
         type="submit"
-        style="margin-top: 10px; width: 100px;"
+        style="margin-top: 20px; width: 100px;"
         color="primary"
         label="ورود"
       />
