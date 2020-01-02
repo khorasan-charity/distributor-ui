@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <img style="width: 450px; height: 300px" src="../assets/images/Logo.jpg" >
-    <form style="display: flex; flex-direction: column; align-items: center" @submit.prevent="login">
+    <form
+      style="display: flex; flex-direction: column; align-items: center"
+      @submit.prevent="login"
+    >
       <q-input
         style="width: 400px; margin-bottom: 5px"
         v-model="username"
@@ -35,24 +38,38 @@
         color="primary"
         label="ورود"
       />
+      <q-btn
+        style="margin-top: 20px; width: 100px;"
+        color="primary"
+        label="خروج"
+        @click="logout"
+      />
     </form>
   </div>
 </template>
 
 <script>
+  import AuthService from '../services/AuthService'
+  const auth = new AuthService()
   export default {
+    components: {
+    },
     data() {
       return {
         username: '',
         password: '',
-        showPassword: false
+        showPassword: false,
       }
     },
     methods: {
       login() {
-        console.log('User log in') // TODO: will be changed
+        auth.login()
+      },
+      logout() {
+        auth.logout()
+        localStorage.removeItem('access_token')
       }
-    }
+    },
   }
 </script>
 

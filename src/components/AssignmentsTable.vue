@@ -162,25 +162,18 @@
         this.pagination.page = page
         this.pagination.rowsPerPage = rowsPerPage
         this.$axios.get(`/Schedule?page=${this.pagination.page}&take=${this.pagination.rowsPerPage}`)
-            .then(res => {
-              this.data = res.data.result.items
-              this.pagination.rowsNumber = res.data.result.totalCount
-              this.loading = false
-        }).catch(() => {
-          const msg = 'ارتباط با سرور قطع است'
-          const color = 'negative'
-          const icon = 'error'
-          this.showNotification(msg, color, icon)
-        });
-      },
-      showNotification(msg, color, icon) {
-        this.$q.notify({
-          message: msg,
-          color: color,
-          icon: icon,
-          textColor: 'white',
-          timeout: 1000
-        })
+          .then(res => {
+            this.data = res.data.result.items
+            this.pagination.rowsNumber = res.data.result.totalCount
+            this.loading = false
+            })
+          .catch(() => {
+            this.showNotification({
+              msg: 'ارتباط با سرور قطع است',
+              color: 'negative',
+              icon: 'error'
+            })
+          });
       },
       formatDate(dateNumber) {
         const date = dateNumber.toString()
@@ -202,30 +195,38 @@
         })
       },
       deleteAssignment(id) {
-        this.$axios.delete(`/Schedule/${id}`)
-          .then(res => {
-            if (res.data.result && res.data.success) {
+
+        this.$q.dialog({
+          title: 'هشدار',
+          message: 'آیا از حذف ماموریت اطمینان دارید؟',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          this.$axios.delete(`/Schedule/${id}`)
+            .then(res => {
+              if (res.data.result && res.data.success) {
+                this.showNotification({
+                  msg: 'ماموریت با موفقیت حذف شد.',
+                  color: 'primary',
+                  icon: 'thumb_up'
+                })
+                this.reloadTable()
+              } else {
+                this.showNotification({
+                  msg: 'ماموریت حذف نشد.',
+                  color: 'negative',
+                  icon: 'error'
+                })
+              }
+            })
+            .catch(() => {
               this.showNotification({
-                msg: 'ماموریت با موفقیت حذف شد.',
-                color: 'primary',
-                icon: 'thumb_up'
-              })
-              this.reloadTable()
-            } else {
-              this.showNotification({
-                msg: 'ماموریت حذف نشد.',
+                msg: 'مشکل در برقراری ارتباط با سرور',
                 color: 'negative',
                 icon: 'error'
               })
-            }
-          })
-          .catch(() => {
-            this.showNotification({
-              msg: 'مشکل در برقراری ارتباط با سرور',
-              color: 'negative',
-              icon: 'error'
             })
-          })
+        })
       }
     }
   }

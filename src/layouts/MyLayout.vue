@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header v-if="$route.fullPath !== '/login'">
+    <q-header v-if="$route.fullPath !== '/login' && $route.path !== '/callback'">
       <q-toolbar>
         <q-btn
           flat
@@ -10,7 +10,6 @@
           icon="menu"
           aria-label="Menu"
         />
-
         <q-toolbar-title class="text-center heading">
           <div class="q-pr-xl">
             حمایت از کودکان مبتلا به سرطان خراسان رضوی
@@ -20,7 +19,7 @@
     </q-header>
 
     <q-drawer
-      v-if="$route.fullPath !== '/login'"
+      v-if="$route.fullPath !== '/login' && $route.path !== '/callback'"
       :width=150
       v-model="leftDrawerOpen"
       show-if-above
@@ -59,17 +58,16 @@
 </template>
 
 <script>
-export default {
-  name: 'MyLayout',
-
-  data () {
-    return {
-      leftDrawerOpen: false
-    }
-  },
-  methods: {
+  export default {
+    name: 'MyLayout',
+    data () {
+      return {
+        leftDrawerOpen: false
+      }
+    },
+    methods: {
+    },
   }
-}
 </script>
 
 <style scoped>

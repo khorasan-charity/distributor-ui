@@ -204,7 +204,13 @@
         })
       },
       deleteDistributor(id) {
-        this.$axios.delete(`Distributor/${id}`)
+        this.$q.dialog({
+          title: 'هشدار',
+          message: 'آیا از حذف موزع اطمینان دارید؟',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          this.$axios.delete(`Distributor/${id}`)
             .then(() => {
               this.showNotification('موزع با موفقیت حذف شد', 'primary', 'thumb_up');
               this.onRequest({
@@ -214,6 +220,7 @@
             .catch(() => {
               this.showNotification('ارتباط با سرور قطع است', 'negative', 'error')
             });
+        })
       },
       sendToEdit(id, firstName, lastName, mobileNumber, password, nationalId, avatarUrl, description) {
         this.isPasswordEditing = false

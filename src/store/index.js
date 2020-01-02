@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 import distributors from './distributors-store'
 import donors from './donors-store'
-import assignments from './assignments-store'
 import scheduleTypes from './scheduleTypes-store'
 
 Vue.use(Vuex)
@@ -18,7 +17,6 @@ export default function (/* { ssrContext } */) {
     modules: {
       distributors,
       donors,
-      assignments,
       scheduleTypes
     },
 

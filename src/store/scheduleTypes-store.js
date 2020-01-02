@@ -16,6 +16,7 @@ const mutations = {
 }
 
 const actions = {
+  // this function will be removed
   reloadScheduleTypes({ commit }) {
     axios.get('/ScheduleType')
       .then(res => {
@@ -25,13 +26,12 @@ const actions = {
           commit('reloadScheduleTypes', scheduleTypes)
         }
       })
-      .catch(() => {
-        return {
-          msg: 'ارتباط با سرور: عدم دریافت لیست انواع ماموریت‌ها',
-          color: 'negative',
-          icon: 'error'
-        }
+      .catch(err => {
+        console.log(err.message);
       })
+  },
+  addScheduleType(scheduleType) {
+    return axios.post('/scheduleType', scheduleType)
   }
 }
 

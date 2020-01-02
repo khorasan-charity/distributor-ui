@@ -23,6 +23,17 @@
       </div>
     </div>
 
+    <div class="text-center" style="margin-top: 20px;">
+      <q-btn
+        style="width: 300px;"
+        color="warning"
+        icon="warning"
+        dense
+        label="برای مدیریت انواع ماموریت‌ها کلیک کنید"
+        @click="goToScheduleTypesPage"
+      />
+    </div>
+
     <assignments-table ref="assignmentsTable" class="q-mt-md" />
 
     <q-btn
@@ -54,6 +65,9 @@
     methods: {
       showAddAssignment() {
         this.$refs.addAssignmentComponent.show()
+      },
+      goToScheduleTypesPage() {
+        this.$router.push('/scheduleTypes')
       }
     },
     mounted() {

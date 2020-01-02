@@ -224,7 +224,13 @@
         });
       },
       deleteDonor(id) {
-        this.$axios.delete(`Donor/${id}`)
+        this.$q.dialog({
+          title: 'هشدار',
+          message: 'آیا از حذف خیر اطمینان دارید؟',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          this.$axios.delete(`Donor/${id}`)
             .then(() => {
               this.showNotification('خیر با موفقیت حذف شد', 'primary', 'thumb_up');
               this.onRequest({
@@ -234,6 +240,7 @@
             .catch(() => {
               this.showNotification('ارتباط با سرور قطع است', 'negative', 'error')
             });
+        })
       },
       sendToEdit(information) {
         this.$refs.editDonorDialog.show(information)

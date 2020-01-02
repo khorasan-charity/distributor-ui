@@ -18,11 +18,19 @@ const routes = [
       },
       {
         path: '/assignments',
-        component: () => import('pages/Assignments.vue')
+        component: () => import('pages/Assignments.vue'),
+      },
+      {
+        path: '/scheduleTypes',
+        component: () => import('pages/Scheduletypes.vue')
       },
       {
         path: '/login',
         component: () => import('pages/Login.vue')
+      },
+      {
+        path: '/callback',
+        component: () => import('pages/Callback.vue')
       }
     ]
   }
