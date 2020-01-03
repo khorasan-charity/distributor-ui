@@ -31,7 +31,13 @@ const actions = {
       })
   },
   addScheduleType(scheduleType) {
-    return axios.post('/scheduleType', scheduleType)
+    return axios.post('ScheduleType', scheduleType);
+  },
+  deleteScheduleType({}, id) {
+    return axios.delete(`ScheduleType/${id}`);
+  },
+  editScheduleType({}, payload) {
+    return axios.put('/ScheduleType', payload);
   }
 }
 
