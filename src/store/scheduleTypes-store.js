@@ -16,7 +16,6 @@ const mutations = {
 }
 
 const actions = {
-  // this function will be removed
   reloadScheduleTypes({ commit }) {
     axios.get('/ScheduleType')
       .then(res => {

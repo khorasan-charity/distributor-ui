@@ -4,7 +4,7 @@
       <q-card-section class="row">
           <div class="text-h6">ویرایش نوع ماموریت</div>
           <q-space />
-          <q-btn @click="reset" flat round icon="close" v-close-popup />
+          <q-btn flat round icon="close" v-close-popup />
         </q-card-section>
 
       <q-card-section>
@@ -44,14 +44,7 @@ export default {
       this.$refs.editScheduleTypeDialog.show();
     },
     hide() {
-      this.reset();
       this.$refs.editScheduleTypeDialog.hide();
-    },
-    reset() {
-      this.scheduleTypeToEdit = {
-        id: 0,
-        name: ''
-      };
     },
     isScheduleTypeNameValid() {
       this.$refs.scheduleTypeName.validate()
