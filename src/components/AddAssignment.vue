@@ -99,6 +99,23 @@
                 </template>
               </q-input>
             </div>
+            <div class="selectListContainer" style="margin-top: 10px;">
+              <q-select
+                outlined
+                v-model="scheduleResultTypeModel"
+                :options="scheduleResultTypes"
+                label="وضعیت ماموریت"
+                style="width: 80%"
+              />
+              <q-btn
+                flat
+                dense
+                color="primary"
+                label="نوع جدید"
+                style="width: 19%; font-size: 20px"
+                @click="$refs.addScheduleResultTypeComponent.show()"
+              />
+            </div>
             <div style="margin-top: 10px;">
               <q-input
                 v-model="assignmentToAdd.description"
@@ -172,6 +189,7 @@
     <edit-donor />
 
     <add-schedule-type ref="addScheduleTypeComponent" />
+    <add-schedule-result-type ref="addScheduleResultTypeComponent" />
 
   </div>
 </template>
@@ -183,6 +201,7 @@
   import AddDonor from '../components/AddDonor.vue'
   import EditDonor from '../components/EditDonor.vue'
   import AddScheduleType from '../components/AddScheduleType.vue'
+  import AddScheduleResultType from '../components/AddScheduleResultType.vue'
   import { mapGetters } from 'vuex'
   export default {
     components: {
@@ -190,7 +209,8 @@
       DonorsTable,
       AddDonor,
       EditDonor,
-      AddScheduleType
+      AddScheduleType,
+      AddScheduleResultType
     },
     data() {
       return {
@@ -212,11 +232,16 @@
           dueAt: this.getTodayDate(),
           doneAt: '',
           description: ''
+        },
+        scheduleResultTypeModel: {
+          label: '',
+          value: 0
         }
       }
     },
     computed: {
-      ...mapGetters('scheduleTypes', ['scheduleTypes'])
+      ...mapGetters('scheduleTypes', ['scheduleTypes']),
+      ...mapGetters('scheduleResultTypes', ['scheduleResultTypes'])
     },
     methods: {
       show() {

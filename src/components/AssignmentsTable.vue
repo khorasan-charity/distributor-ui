@@ -32,6 +32,9 @@
           <q-td key="scheduleType" :props="props">
             {{ props.row.scheduleTypeName }}
           </q-td>
+          <q-td key="scheduleResultType" :props="props">
+            {{ props.row.scheduleResultTypeName }}
+          </q-td>
           <q-td key="description" :props="props">
             {{ props.row.description }}
           </q-td>
@@ -133,6 +136,12 @@
             field: row => row.scheduleTypeName
           },
           {
+            name: 'scheduleResultType',
+            label: 'نوع ماموریت',
+            align: 'left',
+            field: row => row.scheduleResultTypeName
+          },
+          {
             name: 'description',
             label: 'توضیحات',
             align: 'left',
@@ -163,6 +172,7 @@
         this.pagination.rowsPerPage = rowsPerPage
         this.$axios.get(`/Schedule?page=${this.pagination.page}&take=${this.pagination.rowsPerPage}`)
           .then(res => {
+            console.log(res.data) // will be removed
             this.data = res.data.result.items
             this.pagination.rowsNumber = res.data.result.totalCount
             this.loading = false

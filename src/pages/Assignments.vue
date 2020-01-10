@@ -23,14 +23,22 @@
       </div>
     </div>
 
-    <div class="text-center" style="margin-top: 20px;">
+    <div class="text-center" style="margin-top: 20px; display: flex; justify-content: space-around">
       <q-btn
         style="width: 300px;"
-        color="warning"
+        color="accent"
         icon="warning"
         dense
         label="برای مدیریت انواع ماموریت‌ها کلیک کنید"
         @click="goToScheduleTypesPage"
+      />
+      <q-btn
+        style="width: 300px;"
+        color="accent"
+        icon="warning"
+        dense
+        label="برای مدیریت وضعیت ماموریت‌ها کلیک کنید"
+        @click="goToScheduleResultTypesPage"
       />
     </div>
 
@@ -68,6 +76,9 @@
       },
       goToScheduleTypesPage() {
         this.$router.push('/scheduleTypes')
+      },
+      goToScheduleResultTypesPage() {
+        this.$router.push('/scheduleResultTypes')
       }
     },
     mounted() {

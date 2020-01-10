@@ -58,7 +58,13 @@
                 })
               }
             })
-            .catch()
+            .catch(err => {
+              this.showNotification({
+                msg: 'عدم برقراری ارتباط با سرور',
+                color: 'negative',
+                icon: 'error'
+              })
+            })
         }
       },
       isScheduleTypeNameValid() {

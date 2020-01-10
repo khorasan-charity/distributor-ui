@@ -5,6 +5,7 @@ import distributors from './distributors-store'
 import donors from './donors-store'
 import scheduleTypes from './scheduleTypes-store'
 import user from './user-store'
+import scheduleResultTypes from './scheduleResultTypes-store'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default function (/* { ssrContext } */) {
       distributors,
       donors,
       scheduleTypes,
-      user
+      user,
+      scheduleResultTypes
     },
 
     // enable strict mode (adds overhead!)

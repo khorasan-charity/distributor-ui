@@ -31,6 +31,10 @@ const routes = [
       {
         path: '/callback',
         component: () => import('pages/Callback.vue')
+      },
+      {
+        path: '/scheduleResultTypes',
+        component: () => import('pages/ScheduleResultTypes.vue')
       }
     ]
   }
