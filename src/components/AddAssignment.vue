@@ -260,6 +260,7 @@
             distributorId: this.assignmentToAdd.distributorId,
             donorId: this.assignmentToAdd.donorId,
             scheduleTypeId: this.model.value,
+            scheduleResultTypeId: this.scheduleResultTypeModel.value,
             dueAt: this.date2number(this.assignmentToAdd.dueAt),
             doneAt: this.date2number(this.assignmentToAdd.doneAt),
             description: this.assignmentToAdd.description

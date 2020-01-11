@@ -101,6 +101,23 @@
                 </template>
               </q-input>
             </div>
+            <div class="selectListContainer" style="margin-top: 10px;">
+              <q-select
+                outlined
+                v-model="scheduleResultTypeModel"
+                :options="scheduleResultTypes"
+                label="وضعیت ماموریت"
+                style="width: 80%"
+              />
+              <q-btn
+                flat
+                dense
+                color="primary"
+                label="نوع جدید"
+                style="width: 19%; font-size: 20px"
+                @click="$refs.addScheduleResultTypeComponent.show()"
+              />
+            </div>
             <div style="margin-top: 10px;">
               <q-input
                 v-model="assignmentToEdit.description"
@@ -151,6 +168,10 @@
       return {
         isDistributorToSelect: true,
         showSelectDialog: false,
+        scheduleResultTypeModel: {
+          label: '',
+          value: 0
+        },
         model: {
           label: '',
           value: 0
@@ -170,7 +191,8 @@
       }
     },
     computed: {
-      ...mapGetters('scheduleTypes', ['scheduleTypes'])
+      ...mapGetters('scheduleTypes', ['scheduleTypes']),
+      ...mapGetters('scheduleResultTypes', ['scheduleResultTypes'])
     },
     methods: {
       date2number(date) {
@@ -196,6 +218,7 @@
           distributorId: this.assignmentToEdit.distributorId,
           donorId: this.assignmentToEdit.donorId,
           scheduleTypeId: this.model.value,
+          scheduleResultTypeId: this.scheduleResultTypeModel.value,
           dueAt: this.date2number(this.assignmentToEdit.dueAt),
           doneAt: this.date2number(this.assignmentToEdit.doneAt),
           description: this.assignmentToEdit.description
@@ -237,6 +260,10 @@
         this.$refs.selectDialogComponent.show()
       },
       show(information) {
+        this.scheduleResultTypeModel = {
+          label: information.scheduleResultTypeName,
+          value: information.scheduleResultTypeId
+        }
         this.model = {
           label: information.scheduleTypeName,
           value: information.scheduleTypeId
@@ -249,6 +276,8 @@
           donorFullName: information.donorFullName,
           scheduleTypeId: information.scheduleTypeId,
           scheduleTypeName: information.scheduleTypeName,
+          scheduleResultTypeName: information.scheduleResultTypeName,
+          scheduleResultTypeId: information.scheduleResultTypeId,
           description: information.description,
           dueAt: this.formatDate(information.dueAt),
           doneAt: this.formatDate(information.doneAt)

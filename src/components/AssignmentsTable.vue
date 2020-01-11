@@ -54,6 +54,8 @@
                   donorFullName: props.row.donorFullName,
                   scheduleTypeName: props.row.scheduleTypeName,
                   scheduleTypeId: props.row.scheduleTypeId,
+                  scheduleResultTypeName: props.row.scheduleResultTypeName,
+                  scheduleResultTypeId: props.row.scheduleResultTypeId,
                   description: props.row.description,
                   dueAt: props.row.dueAt,
                   doneAt: props.row.doneAt
@@ -137,7 +139,7 @@
           },
           {
             name: 'scheduleResultType',
-            label: 'نوع ماموریت',
+            label: 'وضعیت ماموریت',
             align: 'left',
             field: row => row.scheduleResultTypeName
           },
@@ -205,7 +207,6 @@
         })
       },
       deleteAssignment(id) {
-
         this.$q.dialog({
           title: 'هشدار',
           message: 'آیا از حذف ماموریت اطمینان دارید؟',
