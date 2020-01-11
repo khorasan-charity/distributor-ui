@@ -184,6 +184,8 @@
           donorFullName: '',
           scheduleTypeId: '',
           scheduleTypeName: '',
+          scheduleResultTypeId: '',
+          scheduleResultTypeName: '',
           description: '',
           dueAt: '',
           doneAt: ''
